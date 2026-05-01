@@ -1,10 +1,17 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config(); // load env FIRST
+const path = require('path');
+const dotenv = require('dotenv');
+
+// Load environment variables (explicit path)
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const connectDB = require('./config/db');
 
 const app = express();
+
+// Debug (optional - remove later)
+console.log("MONGO_URI:", process.env.MONGO_URI);
 
 // Connect to database
 connectDB();
@@ -21,9 +28,6 @@ app.use('/api/tasks', require('./routes/taskRoutes'));
 app.get('/', (req, res) => {
   res.json({ message: 'API is running...' });
 });
-
-// Debug (optional - remove later)
-console.log("MONGO_URI:", process.env.MONGO_URI);
 
 // Start server
 const PORT = process.env.PORT || 5000;
